@@ -17,8 +17,10 @@ public class BST {
         for (int i = 0; i < arr.length; i++)
             root = create(arr[i], root);
         inorder(root);
-        int key = 10;
+        int key = 8;
         System.out.println("\n"+search(root, key));
+        root = delete(root, key);
+        inorder(root);
 
     }
 
@@ -49,6 +51,32 @@ public class BST {
             root.left = create(val, root.left);
         } else if (root.data < val)
             root.right = create(val, root.right);
+        return root;
+    }
+    private static node delete(node root,int val){
+        if(root.data<val)
+        root.right = delete(root.right, val);
+        else if(root.data>val)
+        root.left = delete(root.left, val);
+        else{
+            if(root.left==null && root.right==null)
+            return null;
+            
+            if(root.right==null)
+            return root.left;
+            else if(root.left==null)
+            return root.right;
+
+            node IS = InorderSuccessor(root.right);
+            root.data = IS.data;
+            root.right = delete(root.right, IS.data);
+        }
+        return root;
+    }
+
+    private static node InorderSuccessor(node root) {
+        while(root.left!=null)
+        root = root.left;
         return root;
     }
 }

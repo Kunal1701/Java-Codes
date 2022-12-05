@@ -55,12 +55,30 @@ public class BFS {
         }
     }
 
+    static boolean hasPath(ArrayList<Edge> graph[], int src, int dest, boolean visited[]) {
+        if (src == dest) {
+            return true;
+        }
+        visited[src] = true;
+        for (int i = 0; i < graph[src].size(); i++) {
+            Edge e = graph[src].get(i);
+            if (!visited[e.dst]) {
+                boolean res = hasPath(graph, e.dst, dest, visited);
+                if (res) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         int vertex = 7;
         ArrayList<Edge> graph[] = new ArrayList[vertex];
         createGraph(graph);
         bfs(graph);
         System.out.println();
+        System.out.println(hasPath(graph, 0, 6, new boolean[vertex]));
 
     }
 }
